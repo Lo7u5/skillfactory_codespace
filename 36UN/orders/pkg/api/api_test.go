@@ -1,11 +1,11 @@
 package api
 
 import (
-	"skilfactory_codespace/36UN/orders/pkg/db"
 	"encoding/json"
 	"io"
 	"net/http"
 	"net/http/httptest"
+	"skillfactory_codespace/36UN/orders/pkg/db"
 	"testing"
 )
 
