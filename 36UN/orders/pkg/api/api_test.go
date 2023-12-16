@@ -62,3 +62,32 @@ func TestAPI_newOrderHandler(t *testing.T) {
 		t.Fatalf("получен %d id, ожидалось %d", id, 2)
 	}
 }
+
+func TestAPI_updateOrderHandler(t *testing.T) {
+	dbase := db.New()
+	api := New(dbase)
+	dbase.NewOrder(db.Order{})
+	var order db.Order = db.Order{IsOpen: true}
+	orderJson, err := json.Marshal(order)
+	if err != nil {
+		t.Fatalf("не удалось сериализовать объект заказа: %v", err)
+	}
+	req := httptest.NewRequest(http.MethodPatch, "/orders/1", bytes.NewBuffer(orderJson))
+	rr := httptest.NewRecorder()
+	api.r.ServeHTTP(rr, req)
+	if !(rr.Code == http.StatusOK) {
+		t.Errorf("код неверен: получили %d, а хотели %d", rr.Code, http.StatusOK)
+	}
+}
+
+func TestAPI_deleteOrderHandler(t *testing.T) {
+	dbase := db.New()
+	api := New(dbase)
+	dbase.NewOrder(db.Order{})
+	req := httptest.NewRequest(http.MethodDelete, "/orders/1", nil)
+	rr := httptest.NewRecorder()
+	api.r.ServeHTTP(rr, req)
+	if !(rr.Code == http.StatusOK) {
+		t.Errorf("код неверен: получили %d, а хотели %d", rr.Code, http.StatusOK)
+	}
+}
