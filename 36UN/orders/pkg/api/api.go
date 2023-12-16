@@ -27,6 +27,7 @@ func (api *API) Router() *mux.Router {
 }
 
 func (api *API) endpoints() {
+	api.r.Use(api.headersMiddleware)
 	api.r.HandleFunc("/orders", api.ordersHandler).Methods(http.MethodGet)
 	api.r.HandleFunc("/orders", api.newOrderHandler).Methods(http.MethodPost)
 	api.r.HandleFunc("/orders/{id}", api.updateOrderHandler).Methods(http.MethodPatch)
